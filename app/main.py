@@ -70,15 +70,18 @@ async def handle_email(job: dict) -> str:
     to_addr = payload.get("to", "")
     subject = payload.get("subject", "Message from SmartQueue")
     body = payload.get("body", "Hello from SmartQueue!")
+    
     if not to_addr:
         raise ValueError("Missing 'to' email address in payload")
     if not SMTP_USER or not SMTP_PASSWORD:
         raise ValueError("SMTP credentials not configured. Set SMTP_USER and SMTP_PASSWORD env vars.")
+    
     msg = MIMEMultipart()
     msg["From"] = SMTP_USER
     msg["To"] = to_addr
     msg["Subject"] = subject
     msg.attach(MIMEText(body, "html"))
+    
     loop = asyncio.get_event_loop()
     def send():
         with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:

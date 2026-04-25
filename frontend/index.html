@@ -82,7 +82,7 @@
             <button class="job-tab px-4 py-2 rounded-t-lg text-sm font-medium transition tab-inactive bg-gray-800 text-gray-400" data-type="qrcode">QR Code</button>
         </div>
 
-        <!-- Email Form -->
+        <!-- Email Form - Plain Text Friendly -->
         <div id="email-form" class="job-form">
             <div class="grid grid-cols-2 gap-4 mb-4">
                 <div>
@@ -95,8 +95,12 @@
                 </div>
             </div>
             <div class="mb-4">
-                <label class="block text-gray-400 text-sm mb-1">Body (HTML)</label>
-                <textarea id="emailBody" rows="3" placeholder="&lt;p&gt;Hello from SmartQueue!&lt;/p&gt;" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white"></textarea>
+                <label class="block text-gray-400 text-sm mb-1">Message (Plain Text)</label>
+                <textarea id="emailBody" rows="4" placeholder="Enter your message here...&#10;&#10;Hello,&#10;&#10;This is a test email from SmartQueue!&#10;&#10;Best regards,&#10;SmartQueue Team" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white"></textarea>
+                <p class="text-xs text-gray-500 mt-1">✓ Just write normally. Line breaks and spacing will be preserved!</p>
+            </div>
+            <div class="text-xs text-gray-500 bg-gray-800/50 p-3 rounded-lg">
+                💡 <span class="text-purple-400">Tip:</span> No HTML needed! Just write your email naturally. The system will handle everything.
             </div>
         </div>
 
@@ -259,10 +263,13 @@
         let payload = {};
         
         if (jobType === 'email') {
+            const message = document.getElementById('emailBody').value || 'Hello from SmartQueue!';
+            // Convert plain text to HTML with proper line breaks
+            const htmlMessage = message.replace(/\n/g, '<br>').replace(/\r/g, '');
             payload = {
                 to: document.getElementById('emailTo').value,
                 subject: document.getElementById('emailSubject').value || 'Message from SmartQueue',
-                body: document.getElementById('emailBody').value || '<p>Hello from SmartQueue!</p>'
+                body: `<p style="font-family: Arial, sans-serif; font-size: 14px; line-height: 1.6;">${htmlMessage}</p>`
             };
             if (!payload.to) {
                 alert('Please enter recipient email');
