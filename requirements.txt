@@ -1,0 +1,6 @@
+fastapi==0.111.0
+uvicorn[standard]==0.30.0
+python-multipart==0.0.9
+pydantic==2.7.1
+Pillow==10.3.0
+qrcode[pil]==7.4.2
